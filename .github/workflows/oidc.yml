@@ -30,3 +30,11 @@ jobs:
         run: aws s3 ls
       - name: describing instances
         run: aws ec2 describe-instances
+      - name: listing
+        run: aws ec2 describe-instances \
+            --query "Reservations[].Instances[].[
+            InstanceId,
+            Tags[?Key=='Name'].Value|[0],
+            State.Name
+            ]" \
+            --output table

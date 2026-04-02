@@ -1,1 +1,30 @@
-Hello
+name: AWS OIDC Demo
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  oidc-demo:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Configure AWS Credentials using OIDC
+        uses: aws-actions/configure-aws-credentials@v3
+        with:
+          role-to-assume: arn:aws:iam::230399361410:role/GitHub.AWS
+          aws-region: us-east-1
+
+      - name: Verify Identity
+        run: aws sts get-caller-identity
+
+      - name: List S3 Buckets
+        run: aws s3 ls

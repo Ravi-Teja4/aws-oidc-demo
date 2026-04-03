@@ -1,44 +1,43 @@
 name: Terraform IAM Role Creation
 
 on:
-push:
-branches:
-- main
+  push:
+    branches:
+      - main
 
 permissions:
-id-token: write   # Required for OIDC
-contents: read
+  id-token: write   # Required for OIDC
+  contents: read
 
 jobs:
-terraform:
-runs-on: ubuntu-latest
+  terraform:
+    runs-on: ubuntu-latest
 
+    defaults:
+      run:
+        working-directory: .
 
-defaults:
-  run:
-    working-directory: .
-steps:
-  - name: Checkout Code
-    uses: actions/checkout@v3
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
 
-  - name: Configure AWS Credentials (OIDC)
-    uses: aws-actions/configure-aws-credentials@v3
-    with:
-      role-to-assume: arn:aws:iam::230399361410:role/GitHub.AWS
-      aws-region: us-east-1
+      - name: Configure AWS Credentials (OIDC)
+        uses: aws-actions/configure-aws-credentials@v3
+        with:
+          role-to-assume: arn:aws:iam::230399361410:role/GitHub.AWS
+          aws-region: us-east-1
 
-  - name: Setup Terraform
-    uses: hashicorp/setup-terraform@v3
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
 
-  - name: Terraform Init
-    run: terraform init
+      - name: Terraform Init
+        run: terraform init
 
-  - name: Terraform Validate
-    run: terraform validate
+      - name: Terraform Validate
+        run: terraform validate
 
-  - name: Terraform Plan
-    run: terraform plan -out=tfplan
+      - name: Terraform Plan
+        run: terraform plan -out=tfplan
 
-  - name: Terraform Apply
-    run: terraform apply -auto-approve tfplan
-
+      - name: Terraform Apply
+        run: terraform apply -auto-approve tfplan

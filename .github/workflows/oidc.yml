@@ -13,11 +13,10 @@ jobs:
 terraform:
 runs-on: ubuntu-latest
 
-```
+
 defaults:
   run:
     working-directory: .
-
 steps:
   - name: Checkout Code
     uses: actions/checkout@v3
@@ -42,4 +41,4 @@ steps:
 
   - name: Terraform Apply
     run: terraform apply -auto-approve tfplan
-```
+
